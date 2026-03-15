@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_victorylink" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.victorylink</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='website_settings']" position="after">
+                <h2 class="mt32">VictoryLink SMS Gateway</h2>
+                <div class="row mt16 o_settings_container" id="victorylink_settings">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">إعدادات الحساب</span>
+                            <div class="text-muted">
+                                أدخل بيانات الربط الخاصة بـ VictoryLink
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="vl_username" string="Username" class="col-lg-3 o_light_label"/>
+                                    <field name="vl_username"/>
+                                </div>
+                                <div class="row">
+                                    <label for="vl_password" string="Password" class="col-lg-3 o_light_label"/>
+                                    <field name="vl_password" password="True"/>
+                                </div>
+                                <div class="row">
+                                    <label for="vl_sender_id" string="Sender ID" class="col-lg-3 o_light_label"/>
+                                    <field name="vl_sender_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="vl_allow_registration"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="vl_allow_registration" string="السماح بالتسجيل التلقائي"/>
+                            <div class="text-muted">
+                                إنشاء حساب جديد للعميل تلقائياً بمجرد نجاح التحقق من الـ OTP
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
