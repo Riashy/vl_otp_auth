@@ -2,55 +2,52 @@
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { jsonrpc } from "@web/core/network/rpc_service";
 
-publicWidget.registry.VlOtpAuth = publicWidget.widget.extend({
-    selector: '#vl_otp_login_section',
+publicWidget.registry.VlOtpAuth = publicWidget.Widget.extend({
+    selector: '#vl_otp_login_section', // تأكد أن هذا الـ ID موجود في ملف templates.xml
     events: {
         'click #btn_send_otp': '_onSendOtp',
         'click #btn_verify_otp': '_onVerifyOtp',
     },
 
+    init: function () {
+        this._super.apply(this, arguments);
+        console.log("VictoryLink OTP JS Initialized"); // ستظهر في الـ Console إذا اشتغل الملف
+    },
+
     _onSendOtp: function (ev) {
         ev.preventDefault();
-        var self = this;
         var phone = this.$('#mobile_number').val();
         var $msg = this.$('#otp_message');
 
         if (!phone) {
-            $msg.text("يرجى إدخال رقم الهاتف").css("color", "red");
+            alert("يرجى إدخال رقم الهاتف");
             return;
         }
 
-        $msg.text("جاري الإرسال...").css("color", "blue");
+        $msg.text("جاري إرسال الكود...").css("color", "blue");
 
         jsonrpc('/otp/send', {
-            phone_number: phone,
-        }).then(function (result) {
+            'phone_number': phone,
+        }).then((result) => {
             if (result.status === 'success') {
-                $msg.text("تم إرسال الكود بنجاح!").css("color", "green");
-                self.$('#otp_code_container').fadeIn();
-                self.$('#btn_send_otp').text("إعادة إرسال الكود");
+                this.$('#otp_code_container').show();
+                $msg.text("تم الإرسال").css("color", "green");
             } else {
                 $msg.text(result.message || "خطأ في الإرسال").css("color", "red");
             }
-        }).catch(function (error) {
-            console.error("OTP Error:", error);
-            $msg.text("حدث خطأ في الاتصال بالسيرفر").css("color", "red");
         });
     },
 
     _onVerifyOtp: function (ev) {
         ev.preventDefault();
         var code = this.$('#otp_code').val();
-        var $msg = this.$('#otp_message');
-
         jsonrpc('/otp/verify', {
-            entered_otp: code,
-        }).then(function (result) {
+            'entered_otp': code,
+        }).then((result) => {
             if (result.status === 'success') {
-                $msg.text("جاري تسجيل الدخول...").css("color", "green");
-                window.location.href = '/my'; // التوجه لصفحة الحساب
+                window.location.reload();
             } else {
-                $msg.text("الكود غير صحيح").css("color", "red");
+                alert("الكود غير صحيح");
             }
         });
     },
