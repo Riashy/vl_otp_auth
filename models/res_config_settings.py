@@ -4,6 +4,7 @@ from odoo import api, fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
+    # الحقول الأساسية للتفعيل
     login_enabled = fields.Boolean(
         string="Enable OTP Login",
         config_parameter="vl_otp_auth.login_enabled",
@@ -18,9 +19,11 @@ class ResConfigSettings(models.TransientModel):
         config_parameter="vl_otp_auth.allow_portal_login",
         default=True,
     )
-    gateway_username = fields.Char(
+
+    # بيانات الربط مع بوابة الرسائل (تعديل الحقل المسبب للخطأ)
+    vl_username = fields.Char(
         string="Gateway Username",
-        config_parameter="vl_otp_auth.gateway_username",
+        config_parameter="vl_otp_auth.vl_username",
     )
     gateway_password = fields.Char(
         string="Gateway Password",
@@ -30,6 +33,8 @@ class ResConfigSettings(models.TransientModel):
         string="Sender Name",
         config_parameter="vl_otp_auth.gateway_sender",
     )
+
+    # روابط الـ API
     gateway_send_url = fields.Char(
         string="Send API URL",
         config_parameter="vl_otp_auth.gateway_send_url",
@@ -40,6 +45,8 @@ class ResConfigSettings(models.TransientModel):
         config_parameter="vl_otp_auth.gateway_credit_url",
         default="https://smsvas.vlserv.com//VLSMSPlatformResellerAPI/CheckCreditApi/api/CheckCredit",
     )
+
+    # إعدادات الـ OTP
     default_country_code = fields.Char(
         string="Default Country Code",
         config_parameter="vl_otp_auth.default_country_code",
@@ -72,6 +79,8 @@ class ResConfigSettings(models.TransientModel):
         default="Your verification code is {code}. It expires in {minutes} minutes.",
         help="Use {code} and {minutes} placeholders.",
     )
+
+    # حقل عرض الرصيد
     gateway_credit_status = fields.Char(
         string="Gateway Credit Status",
         readonly=True,
@@ -86,8 +95,9 @@ class ResConfigSettings(models.TransientModel):
 
     def action_check_vl_credit(self):
         self.ensure_one()
+        # تأكد أن الموديل "vl.sms.gateway" موجود ومعرف في مشروعك
         result = self.env["vl.sms.gateway"].check_credit()
-        self.gateway_credit_status = "%s (%s)" % (result["status_code"], result["status_message"])
+        self.gateway_credit_status = "%s (%s)" % (result.get("status_code", ""), result.get("status_message", ""))
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
