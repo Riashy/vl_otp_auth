@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_vl_otp_auth" model="ir.ui.view">
+        <field name="name">res.users.form.vl.otp.auth</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='login']" position="after">
+                <field name="mobile" placeholder="+2010XXXXXXXX"/>
+                <field name="otp_login_enabled"/>
+                <field name="otp_mobile_verified" readonly="1"/>
+                <field name="otp_mobile_digits" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

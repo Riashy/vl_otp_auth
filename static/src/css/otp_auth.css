@@ -1,0 +1,18 @@
+.o_vl_otp_login,
+.o_vl_otp_signup {
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.o_vl_otp_separator {
+    letter-spacing: .02em;
+}
+
+.o_vl_otp_card {
+    border-radius: 14px;
+}
+
+.o_vl_otp_card .btn {
+    min-height: 44px;
+}

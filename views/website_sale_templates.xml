@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="checkout_payment_otp" name="Checkout OTP Verification">
+        <t t-call="website_sale.checkout_layout">
+            <t t-set="additional_title">Shop - Verify Mobile</t>
+            <t t-set="redirect" t-valuef="/shop/payment"/>
+            <t t-set="show_navigation_button" t-value="False"/>
+            <t t-set="oe_structure">
+                <div class="oe_structure" id="oe_structure_vl_otp_payment_1"/>
+            </t>
+
+            <div class="col-12 col-lg-8 mx-auto">
+                <div class="card shadow-sm o_vl_otp_card">
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-3">Verify your mobile number before payment</h3>
+                        <p class="text-muted mb-3">An OTP will be sent to the mobile number used in the checkout address.</p>
+
+                        <t t-if="otp_checkout_error">
+                            <div class="alert alert-danger" role="alert">
+                                <t t-esc="otp_checkout_error"/>
+                            </div>
+                        </t>
+                        <t t-if="otp_checkout_message">
+                            <div class="alert alert-success" role="status">
+                                <t t-esc="otp_checkout_message"/>
+                            </div>
+                        </t>
+
+                        <form action="/vl_otp/checkout/request" method="post" class="mb-4">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb-3">
+                                <label for="otp_checkout_mobile" class="form-label">Mobile Number</label>
+                                <input type="text" name="otp_mobile" id="otp_checkout_mobile" class="form-control"
+                                       t-att-value="otp_checkout_mobile"
+                                       placeholder="+2010XXXXXXXX" required="required" autocomplete="tel"/>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-outline-primary">Send Checkout OTP</button>
+                            </div>
+                        </form>
+
+                        <form action="/vl_otp/checkout/verify" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="otp_checkout_request_token" t-att-value="otp_checkout_request_token"/>
+                            <div class="mb-3">
+                                <label for="otp_checkout_mobile_verify" class="form-label">Mobile Number</label>
+                                <input type="text" name="otp_mobile" id="otp_checkout_mobile_verify" class="form-control"
+                                       t-att-value="otp_checkout_mobile"
+                                       placeholder="+2010XXXXXXXX" required="required" autocomplete="tel"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="otp_checkout_code" class="form-label">OTP Code</label>
+                                <input type="text" name="otp_code" id="otp_checkout_code" class="form-control"
+                                       placeholder="123456" required="required" inputmode="numeric" autocomplete="one-time-code"/>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Verify OTP &amp; Continue to Payment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-4" id="address_on_payment">
+                    <t t-call="website_sale.address_on_checkout"/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

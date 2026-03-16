@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_vl_otp_auth" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.vl.otp.auth</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="OTP Authentication" name="vl_otp_auth" data-key="vl_otp_auth">
+                    <block title="OTP Features">
+                        <setting string="Enable OTP Login" help="Allow users to log in with mobile number and one-time code sent by SMS.">
+                            <field name="login_enabled"/>
+                        </setting>
+                        <setting string="Enable OTP Signup" help="Allow website visitors to create an account only after verifying a mobile OTP.">
+                            <field name="signup_enabled"/>
+                        </setting>
+                        <setting string="Require OTP Before Payment" help="Force website checkout customers to verify a mobile OTP before accessing payment methods.">
+                            <field name="checkout_enabled"/>
+                        </setting>
+                        <setting string="Allowed Login User Types" help="Choose whether OTP login is available for employees, portal users, or both.">
+                            <div class="content-group row mt16">
+                                <div class="col-12 col-lg-6">
+                                    <label for="allow_employee_login"/>
+                                    <field name="allow_employee_login"/>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <label for="allow_portal_login"/>
+                                    <field name="allow_portal_login"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="Victory Link Gateway">
+                        <setting string="Gateway Username">
+                            <field name="gateway_username" placeholder="BeNeshtyAPI"/>
+                        </setting>
+                        <setting string="Gateway Password">
+                            <field name="gateway_password" password="True"/>
+                        </setting>
+                        <setting string="Sender Name">
+                            <field name="gateway_sender" placeholder="BeNeshty"/>
+                        </setting>
+                        <setting string="Send API URL">
+                            <field name="gateway_send_url"/>
+                        </setting>
+                        <setting string="Check Credit API URL">
+                            <field name="gateway_credit_url"/>
+                        </setting>
+                        <setting string="Credit Check">
+                            <div class="content-group">
+                                <button name="action_check_vl_credit" string="Check Credit" type="object" class="btn btn-secondary"/>
+                                <field name="gateway_credit_status" readonly="1" class="oe_inline ms-2"/>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="OTP Rules">
+                        <setting string="Default Country Code">
+                            <field name="default_country_code" placeholder="20"/>
+                        </setting>
+                        <setting string="OTP Length">
+                            <field name="otp_code_length"/>
+                        </setting>
+                        <setting string="OTP Expiry (Minutes)">
+                            <field name="otp_expiry_minutes"/>
+                        </setting>
+                        <setting string="Maximum Attempts">
+                            <field name="otp_max_attempts"/>
+                        </setting>
+                        <setting string="Resend Interval (Seconds)">
+                            <field name="otp_resend_interval_seconds"/>
+                        </setting>
+                        <setting string="SMS Template" help="Use {code} and {minutes} placeholders in the message body.">
+                            <field name="otp_sms_template"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
